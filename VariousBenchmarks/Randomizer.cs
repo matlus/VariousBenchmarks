@@ -58,7 +58,7 @@ namespace ArrayVsDictionaryBenchmark
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2233:OperationsShouldNotOverflow", MessageId = "length-4")]
-        public static string GetRandomAciiString(int length)
+        public static string GetRandomAsciiString(int length)
         {
             const int NUMERIC = 0;
             const int LOWERCASE = 1;

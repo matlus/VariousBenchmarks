@@ -28,10 +28,10 @@ namespace ArrayVsDictionaryBenchmark
 
             for (int i = 0; i < NumberOfElements; i++)
             {
-                var randomName = Randomizer.GetRandomAciiString(10);
+                var randomName = Randomizer.GetRandomAsciiString(10);
                 namesToLookup[i] = randomName;
 
-                var someClass = new SomeClass(randomName, Randomizer.GetRandomAciiString(30));
+                var someClass = new SomeClass(randomName, Randomizer.GetRandomAsciiString(30));
                 someClassArray[i] = someClass;
                 sortedSomeClassArray[i] = someClass;
                 someClassDictionary.Add(someClass.Name, someClass);                

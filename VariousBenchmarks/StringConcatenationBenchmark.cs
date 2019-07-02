@@ -21,7 +21,7 @@ namespace ArrayVsDictionaryBenchmark
             stringsToConcat = new string[NumberOfStrings];
             for (int i = 0; i < NumberOfStrings; i++)
             {
-                stringsToConcat[i] = Randomizer.GetRandomAciiString(StringLength);
+                stringsToConcat[i] = Randomizer.GetRandomAsciiString(StringLength);
             }
         }
 

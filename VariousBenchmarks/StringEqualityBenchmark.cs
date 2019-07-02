@@ -13,14 +13,14 @@ namespace ArrayVsDictionaryBenchmark
         private readonly StringComparer stringComparerOrdinal = StringComparer.Ordinal;
         private readonly StringComparer stringComparerOrdinalIgnoreCase = StringComparer.OrdinalIgnoreCase;
 
-        [Params(10, 100, 200, 300, 500, 1000)]
+        [Params(10, 100/*, 200, 300, 500, 1000*/)]
         public int StringLength { get; set; }
 
         [GlobalSetup]
         public void Initialize()
         {
-            stringA = Randomizer.GetRandomAciiString(StringLength);
-            stringB = stringA + Randomizer.GetRandomAciiString(1);
+            stringA = Randomizer.GetRandomAsciiString(StringLength);
+            stringB = stringA + Randomizer.GetRandomAsciiString(1);
         }
 
         [Benchmark]
@@ -45,6 +45,18 @@ namespace ArrayVsDictionaryBenchmark
         public bool EqualsOrdinalIgnoreCase()
         {
             return stringA.Equals(stringB, StringComparison.OrdinalIgnoreCase);
+        }
+
+        [Benchmark]
+        public bool EqualsInvariantCulture()
+        {
+            return stringA.Equals(stringB, StringComparison.InvariantCulture);
+        }
+
+        [Benchmark]
+        public bool EqualsInvariantCultureIgnoreCase()
+        {
+            return stringA.Equals(stringB, StringComparison.InvariantCultureIgnoreCase);
         }
 
         [Benchmark]
