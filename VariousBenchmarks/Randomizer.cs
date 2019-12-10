@@ -9,10 +9,10 @@ namespace ArrayVsDictionaryBenchmark
 
     internal static class Randomizer
     {
-        private static int[] s_punctuationACIICodes = { 33, 35, 36, 37, 38, 40, 41, 42, 43, 44, 45, 46, 47, 58, 59, 60, 61, 62, 63, 64, 91, 92, 93, 94, 95, 123, 124, 125, 126 };
+        private static readonly int[] s_punctuationACIICodes = { 33, 35, 36, 37, 38, 40, 41, 42, 43, 44, 45, 46, 47, 58, 59, 60, 61, 62, 63, 64, 91, 92, 93, 94, 95, 123, 124, 125, 126 };
 
+        private static readonly RNGCryptoServiceProvider rngCrypto = new RNGCryptoServiceProvider();
 
-        private static RNGCryptoServiceProvider rngCrypto = new RNGCryptoServiceProvider();
         private static int GetRandomNumber()
         {
             var buffer = new byte[4];
@@ -95,7 +95,7 @@ namespace ArrayVsDictionaryBenchmark
         public static string GetRandomUnicodeString(int length)
         {
             var random = new Random(GetRandomNumber());
-            length = length * 2;
+            length *= 2;
 
             byte[] str = new byte[length];
 

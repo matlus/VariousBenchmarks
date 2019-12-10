@@ -1,0 +1,7 @@
+﻿[*.cs]
+
+# CA1304: Specify CultureInfo
+dotnet_diagnostic.CA1304.severity = none
+
+# S1643: Strings should not be concatenated using '+' in a loop
+dotnet_diagnostic.S1643.severity = none

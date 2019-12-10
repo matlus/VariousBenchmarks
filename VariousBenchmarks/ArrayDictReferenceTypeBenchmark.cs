@@ -1,7 +1,6 @@
 ﻿using BenchmarkDotNet.Attributes;
 using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace ArrayVsDictionaryBenchmark
 {
@@ -37,7 +36,7 @@ namespace ArrayVsDictionaryBenchmark
                 someClassDictionary.Add(someClass.Name, someClass);                
             }
 
-            Array.Sort(sortedSomeClassArray, (item1, item2) => item1.Name.CompareTo(item2.Name));            
+            Array.Sort(sortedSomeClassArray, (item1, item2) => String.Compare(item1.Name, item2.Name, StringComparison.OrdinalIgnoreCase));            
 
             namesToLookup = Randomizer.ShuffleArray(namesToLookup);
         }
@@ -107,7 +106,7 @@ namespace ArrayVsDictionaryBenchmark
         {
             for (int i = 0; i < namesToLookup.Length; i++)
             {
-                var _ = Array.Find(sortedSomeClassArray, sc => sc.Name == namesToLookup[i]);
+                _ = Array.Find(sortedSomeClassArray, sc => sc.Name == namesToLookup[i]);
             }
         }
 
@@ -119,7 +118,7 @@ namespace ArrayVsDictionaryBenchmark
                 var nameToLookup = namesToLookup[i];
                 if (someClassDictionary.ContainsKey(nameToLookup))
                 {
-                    var _ = someClassDictionary[nameToLookup];
+                    _ = someClassDictionary[nameToLookup];
                 }
             }
         }

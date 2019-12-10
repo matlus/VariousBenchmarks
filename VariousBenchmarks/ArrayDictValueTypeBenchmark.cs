@@ -1,7 +1,6 @@
 ﻿using BenchmarkDotNet.Attributes;
 using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace ArrayVsDictionaryBenchmark
 {
@@ -76,7 +75,7 @@ namespace ArrayVsDictionaryBenchmark
 
             for (int i = 0; i < numbersToLookup.Length - 1; i++)
             {
-                var _ = intDictionary[numbersToLookup[i]];
+                _ = intDictionary[numbersToLookup[i]];
                 foundCount++;
             }
 
@@ -92,7 +91,7 @@ namespace ArrayVsDictionaryBenchmark
             {
                 if (intDictionary.ContainsKey(numbersToLookup[i]))
                 {
-                    var _ = intDictionary[numbersToLookup[i]];
+                    _ = intDictionary[numbersToLookup[i]];
                     foundCount++;
                 }
             }
