@@ -53,6 +53,17 @@ namespace ArrayVsDictionaryBenchmark
         }
 
         [Benchmark]
+        public List<Customer> GetUsingMergeSetsAndSingleToUpper()
+        {
+            _verifiedCustomerNames.UnionWith(_certifiedCustomerNames);
+            _verifiedCustomerNames.UnionWith(_aListCustomerNames);
+
+            return
+                _customers
+                    .Where(c => _verifiedCustomerNames.Contains(c.FirstName.ToUpper())).ToList();
+        }
+
+        [Benchmark]
         public List<Customer> GetUsingConcatAndMultipleToUpper()
         {
             return
@@ -77,7 +88,8 @@ namespace ArrayVsDictionaryBenchmark
         public List<Customer> GetUsingLocalvariableAssignmentForToUpper()
         {
             return (_customers
-                .Where(c => {
+                .Where(c =>
+                {
                     var firstNameUppered = c.FirstName.ToUpper();
                     return _verifiedCustomerNames.Contains(firstNameUppered)
                     || _certifiedCustomerNames.Contains(firstNameUppered)

@@ -20,6 +20,11 @@ namespace ArrayVsDictionaryBenchmark
             ////BenchmarkRunner.Run<BranchPredictionBenchmark>();
             BenchmarkRunner.Run<LinqWhereBenchMarks>();
             ////BenchmarkRunner.Run<AsyncVsContinueWith>();
+            
+
+            ////var linqWhereBenchMarks = new LinqWhereBenchMarks();
+            ////linqWhereBenchMarks.GlobalSetup();
+            ////linqWhereBenchMarks.GetUsingMergeSetsAndSingleToUpper();
 
             Console.WriteLine("Done.....Press any key to Quit");
             Console.ReadLine();
