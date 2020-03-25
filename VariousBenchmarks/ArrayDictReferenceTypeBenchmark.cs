@@ -1,7 +1,6 @@
 ﻿using BenchmarkDotNet.Attributes;
 using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace ArrayVsDictionaryBenchmark
 {
@@ -43,85 +42,109 @@ namespace ArrayVsDictionaryBenchmark
         }
 
         [Benchmark(Baseline = true)]
-        public void ArrayLookup()
+        public SomeClass ArrayLookup()
         {
+            SomeClass found = null;
+
             for (int i = 0; i < namesToLookup.Length; i++)
             {
                 for (int j = 0; j < someClassArray.Length; j++)
                 {
                     if (someClassArray[j].Name == namesToLookup[i])
                     {
-                        break;
+                        found = someClassArray[j];
                     }
                 }
             }
+
+            return found;
         }
 
         [Benchmark]
-        public void ArrayLookupOrdinal()
+        public SomeClass ArrayLookupOrdinal()
         {
+            SomeClass found = null;
+
             for (int i = 0; i < namesToLookup.Length; i++)
             {
                 for (int j = 0; j < someClassArray.Length; j++)
                 {                    
                     if (someClassArray[j].Name.Equals(namesToLookup[i], StringComparison.Ordinal))
                     {
-                        break;
+                        found = someClassArray[j];
                     }
                 }
             }
+
+            return found;
         }
 
         [Benchmark]
-        public void ArrayLookupStringComparerOrdinal()
+        public SomeClass ArrayLookupStringComparerOrdinal()
         {
+            SomeClass found = null;
+
             for (int i = 0; i < namesToLookup.Length; i++)
             {
                 for (int j = 0; j < someClassArray.Length; j++)
                 {
                     if (stringComparerOrdinal.Equals(someClassArray[j].Name, namesToLookup[i]))
                     {
-                        break;
+                        found = someClassArray[j];
                     }
                 }
             }
+
+            return found;
         }
 
         [Benchmark]
-        public void ArrayLookupStringComparerOrdinalIgnoreCase()
+        public SomeClass ArrayLookupStringComparerOrdinalIgnoreCase()
         {
+            SomeClass found = null;
+
             for (int i = 0; i < namesToLookup.Length; i++)
             {
                 for (int j = 0; j < someClassArray.Length; j++)
                 {
                     if (stringComparerOrdinalIgnoreCase.Equals(someClassArray[j].Name, namesToLookup[i]))
                     {
-                        break;
+                        found = someClassArray[j];
                     }
                 }
             }
+
+            return found;
         }
 
         [Benchmark]
-        public void SortedArrayLookup()
+        public SomeClass SortedArrayLookup()
         {
+            SomeClass found = null;
+
             for (int i = 0; i < namesToLookup.Length; i++)
             {
-                var _ = Array.Find(sortedSomeClassArray, sc => sc.Name == namesToLookup[i]);
+                found = Array.Find(sortedSomeClassArray, sc => sc.Name == namesToLookup[i]);
             }
+            
+            return found;
         }
 
         [Benchmark]
-        public void DictionaryLookup()
+        public SomeClass DictionaryLookup()
         {
+            SomeClass found = null;
+
             for (int i = 0; i < namesToLookup.Length; i++)
             {
                 var nameToLookup = namesToLookup[i];
                 if (someClassDictionary.ContainsKey(nameToLookup))
                 {
-                    var _ = someClassDictionary[nameToLookup];
+                    found = someClassDictionary[nameToLookup];
                 }
             }
+
+            return found;
         }
     }
 

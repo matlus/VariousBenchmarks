@@ -1,7 +1,6 @@
 ﻿using BenchmarkDotNet.Attributes;
 using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace ArrayVsDictionaryBenchmark
 {
@@ -15,7 +14,7 @@ namespace ArrayVsDictionaryBenchmark
         private Dictionary<int, int> intDictionary;
         private int[] numbersToLookup;
 
-        [Params(55, 60, 65, 70, 75, 80)]
+        [Params(/*55, 60, 65, 70,*/ 75, 80)]
         public int NumberOfElements { get; set; }
 
         [GlobalSetup]
@@ -56,18 +55,18 @@ namespace ArrayVsDictionaryBenchmark
             return foundCount;
         }
 
-        [Benchmark]
-        public int SortedArrayLookup()
-        {
-            var foundCount = 0;
-            for (int i = 0; i < numbersToLookup.Length - 1; i++)
-            {
-                Array.BinarySearch<int>(intArraySorted, numbersToLookup[i]);
-                foundCount++;
-            }
+        ////[Benchmark]
+        ////public int SortedArrayLookup()
+        ////{
+        ////    var foundCount = 0;
+        ////    for (int i = 0; i < numbersToLookup.Length - 1; i++)
+        ////    {
+        ////        Array.BinarySearch<int>(intArraySorted, numbersToLookup[i]);
+        ////        foundCount++;
+        ////    }
 
-            return foundCount;
-        }
+        ////    return foundCount;
+        ////}
 
         [Benchmark]
         public int DictionaryLookup()
@@ -76,7 +75,7 @@ namespace ArrayVsDictionaryBenchmark
 
             for (int i = 0; i < numbersToLookup.Length - 1; i++)
             {
-                var _ = intDictionary[numbersToLookup[i]];
+                _ = intDictionary[numbersToLookup[i]];
                 foundCount++;
             }
 
@@ -92,7 +91,23 @@ namespace ArrayVsDictionaryBenchmark
             {
                 if (intDictionary.ContainsKey(numbersToLookup[i]))
                 {
-                    var _ = intDictionary[numbersToLookup[i]];
+                    _ = intDictionary[numbersToLookup[i]];
+                    foundCount++;
+                }
+            }
+
+            return foundCount;
+        }
+
+        [Benchmark]
+        public int DictionaryTryGetValue()
+        {
+            var foundCount = 0;
+
+            for (int i = 0; i < numbersToLookup.Length - 1; i++)
+            {
+                if (intDictionary.TryGetValue(numbersToLookup[i], out int value))
+                {
                     foundCount++;
                 }
             }

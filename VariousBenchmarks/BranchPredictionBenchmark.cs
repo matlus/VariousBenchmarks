@@ -1,8 +1,5 @@
 ﻿using BenchmarkDotNet.Attributes;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace ArrayVsDictionaryBenchmark
 {
@@ -22,7 +19,7 @@ namespace ArrayVsDictionaryBenchmark
         }
 
         [Benchmark]
-        public void IterateOverOrderedArray()
+        public int IterateOverOrderedArray()
         {
             var higherThanMidpoint = 0;
 
@@ -33,10 +30,12 @@ namespace ArrayVsDictionaryBenchmark
                     higherThanMidpoint++;
                 }
             }
+
+            return higherThanMidpoint;
         }
 
-        [Benchmark]
-        public void IterateOverRandomOrderedArray()
+        [Benchmark(Baseline = true)]
+        public int IterateOverRandomOrderedArray()
         {
             var higherThanMidpoint = 0;
 
@@ -47,6 +46,8 @@ namespace ArrayVsDictionaryBenchmark
                     higherThanMidpoint++;
                 }
             }
+
+            return higherThanMidpoint;
         }
     }
 }
