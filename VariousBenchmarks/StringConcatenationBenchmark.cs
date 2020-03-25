@@ -82,7 +82,7 @@ namespace ArrayVsDictionaryBenchmark
         [Benchmark]
         public string ConcatMethod()
         {
-            string concatenatedString = null;
+            string concatenatedString;
 
             switch (NumberOfStrings)
             {
