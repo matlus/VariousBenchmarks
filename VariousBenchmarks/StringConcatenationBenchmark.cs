@@ -9,7 +9,7 @@ namespace ArrayVsDictionaryBenchmark
     {
         private string[] stringsToConcat;
 
-        [Params(/*2, 3,*/ 4, /*5, 6, 7, 8, 9,*/ 10)]
+        [Params(2, 3, 4, 5, 6, 7, 8, 9, 10)]
         public int NumberOfStrings { get; set; }
 
         [Params(50)]
@@ -104,6 +104,19 @@ namespace ArrayVsDictionaryBenchmark
         }
 
         [Benchmark]
+        public string ConcatLoop()
+        {
+            string concatenatedString = null;
+
+            for (int i = 0; i < NumberOfStrings; i++)
+            {
+                concatenatedString = string.Concat(concatenatedString, stringsToConcat[i]);
+            }
+
+            return concatenatedString;
+        }
+
+        [Benchmark]
         public string StringFormat()
         {
             string concatenatedString = null;
@@ -142,19 +155,6 @@ namespace ArrayVsDictionaryBenchmark
             return concatenatedString;
         }
 
-
-        [Benchmark]
-        public string ConcatLoop()
-        {
-            string concatenatedString = null;
-
-            for (int i = 0; i < NumberOfStrings; i++)
-            {
-                concatenatedString = string.Concat(concatenatedString, stringsToConcat[i]);
-            }
-
-            return concatenatedString;
-        }
 
         [Benchmark]
         public string StringBuilder()
@@ -253,6 +253,19 @@ namespace ArrayVsDictionaryBenchmark
             }
 
             return stringBuilder.ToString();
+        }
+
+        [Benchmark]
+        public string StringBuilderCachedLoop()
+        {            
+            var stringBuilder = StringBuilderCache.Acquire(NumberOfStrings * StringLength * 2);
+
+            for (int i = 0; i < NumberOfStrings; i++)
+            {
+                stringBuilder.Append(stringsToConcat[i]);
+            }
+
+            return StringBuilderCache.GetStringAndRelease(stringBuilder);
         }
 
         [Benchmark]

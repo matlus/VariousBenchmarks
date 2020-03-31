@@ -16,8 +16,8 @@ namespace ArrayVsDictionaryBenchmark
             ////BenchmarkRunner.Run<ArrayDictValueTypeBenchmark>();
             ////BenchmarkRunner.Run<ReferenceTypeBenchmark>();
             ////BenchmarkRunner.Run<StringEqualityBenchmark>();
-            BenchmarkRunner.Run<StringConcatVsMutate>();
-            ////BenchmarkRunner.Run<StringConcatenationBenchmark>();
+            ////BenchmarkRunner.Run<StringConcatVsMutate>();
+            BenchmarkRunner.Run<StringConcatenationBenchmark>();
             ////BenchmarkRunner.Run<BranchPredictionBenchmark>();
             ////BenchmarkRunner.Run<AsyncVsContinueWith>();
 
