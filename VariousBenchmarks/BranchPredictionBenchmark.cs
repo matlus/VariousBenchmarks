@@ -1,4 +1,5 @@
 ﻿using BenchmarkDotNet.Attributes;
+using System;
 using System.Linq;
 
 namespace ArrayVsDictionaryBenchmark
@@ -18,7 +19,7 @@ namespace ArrayVsDictionaryBenchmark
             randomOrderedNumbers = Randomizer.ShuffleArray(orderedNumbers);
         }
 
-        [Benchmark]
+        [Benchmark(Baseline = true)]
         public int IterateOverOrderedArray()
         {
             var higherThanMidpoint = 0;
@@ -34,7 +35,7 @@ namespace ArrayVsDictionaryBenchmark
             return higherThanMidpoint;
         }
 
-        [Benchmark(Baseline = true)]
+        [Benchmark]
         public int IterateOverRandomOrderedArray()
         {
             var higherThanMidpoint = 0;

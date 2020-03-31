@@ -9,7 +9,7 @@ namespace ArrayVsDictionaryBenchmark
     {
         private string[] stringsToConcat;
 
-        [Params(2, 3, 4, 5, 6, 7, 8, 9, 10)]
+        [Params(/*2, 3,*/ 4, /*5, 6, 7, 8, 9,*/ 10)]
         public int NumberOfStrings { get; set; }
 
         [Params(50)]
@@ -102,6 +102,46 @@ namespace ArrayVsDictionaryBenchmark
 
             return concatenatedString;
         }
+
+        [Benchmark]
+        public string StringFormat()
+        {
+            string concatenatedString = null;
+
+            switch (NumberOfStrings)
+            {
+                case 2:
+                    concatenatedString = string.Format("{0} {1}", stringsToConcat[0], stringsToConcat[1]);
+                    break;
+                case 3:
+                    concatenatedString = string.Format("{0} {1} {2}", stringsToConcat[0], stringsToConcat[1], stringsToConcat[2]);
+                    break;
+                case 4:
+                    concatenatedString = string.Format("{0} {1} {2} {3}", stringsToConcat[0], stringsToConcat[1], stringsToConcat[2], stringsToConcat[3]);
+                    break;
+                case 5:
+                    concatenatedString = string.Format("{0} {1} {2} {3} {4}", stringsToConcat[0], stringsToConcat[1], stringsToConcat[2], stringsToConcat[3], stringsToConcat[4]);
+                    break;
+                case 6:
+                    concatenatedString = string.Format("{0} {1} {2} {3} {4} {5}", stringsToConcat[0], stringsToConcat[1], stringsToConcat[2], stringsToConcat[3], stringsToConcat[4], stringsToConcat[5]);
+                    break;
+                case 7:
+                    concatenatedString = string.Format("{0} {1} {2} {3} {4} {5} {6}", stringsToConcat[0], stringsToConcat[1], stringsToConcat[2], stringsToConcat[3], stringsToConcat[4], stringsToConcat[5], stringsToConcat[6]);
+                    break;
+                case 8:
+                    concatenatedString = string.Format("{0} {1} {2} {3} {4} {5} {6} {7}", stringsToConcat[0], stringsToConcat[1], stringsToConcat[2], stringsToConcat[3], stringsToConcat[4], stringsToConcat[5], stringsToConcat[6], stringsToConcat[7]);
+                    break;
+                case 9:
+                    concatenatedString = string.Format("{0} {1} {2} {3} {4} {5} {6} {7} {8}", stringsToConcat[0], stringsToConcat[1], stringsToConcat[2], stringsToConcat[3], stringsToConcat[4], stringsToConcat[5], stringsToConcat[6], stringsToConcat[7], stringsToConcat[8]);
+                    break;
+                case 10:
+                    concatenatedString = string.Format("{0} {1} {2} {3} {4} {5} {6} {7} {8} {9}", stringsToConcat[0], stringsToConcat[1], stringsToConcat[2], stringsToConcat[3], stringsToConcat[4], stringsToConcat[5], stringsToConcat[6], stringsToConcat[7], stringsToConcat[8], stringsToConcat[9]);
+                    break;
+            }
+
+            return concatenatedString;
+        }
+
 
         [Benchmark]
         public string ConcatLoop()
