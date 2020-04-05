@@ -27,7 +27,7 @@ namespace ArrayVsDictionaryBenchmark
             var s4 = " Are";
             var s5 = " You";
             var s6 = " Doing?";            
-            return string.Format("{0} {1} {2} {3} {4} {5}", s1, s2, s3, s4, s5, s6);
+            return string.Format("{0}{1}{2}{3}{4}{5}", s1, s2, s3, s4, s5, s6);
         }
 
         [Benchmark]
@@ -39,7 +39,7 @@ namespace ArrayVsDictionaryBenchmark
             var s4 = " Are";
             var s5 = " You";
             var s6 = " Doing?";
-           return $"{s1} {s2} {s3} {s4} {s5} {s6}";
+            return $"{s1}{s2}{s3}{s4}{s5}{s6}";
         }
 
 
