@@ -8,11 +8,11 @@ namespace ArrayVsDictionaryBenchmark
     [MemoryDiagnoser, RankColumn]
     public class LinqWhereBenchMarks
     {
-
         private HashSet<string> _verifiedCustomerNames;
         private HashSet<string> _certifiedCustomerNames;
         private HashSet<string> _aListCustomerNames;
         private Customer[] _customers;
+        private IEnumerable<Customer> _customersEnumerable;
         private readonly StringCaseInsensitiveComparer _stringCaseInsensitiveComparer = new StringCaseInsensitiveComparer();
 
         [GlobalSetup]
@@ -28,6 +28,10 @@ namespace ArrayVsDictionaryBenchmark
                 new Customer("bbb", "Lbbbb"),
                 new Customer("ccc", "Lcccc"),
             };
+
+            var customersList = new List<Customer>();
+            customersList.AddRange(_customers);
+            _customersEnumerable = customersList;
         }
 
         [Benchmark(Baseline = true)]
@@ -72,7 +76,6 @@ namespace ArrayVsDictionaryBenchmark
                     .Concat(_aListCustomerNames)
                     .Contains(c.FirstName.ToUpper())).ToList();
         }
-
 
         [Benchmark]
         public List<Customer> GetUsingQueryExpLetAndOneToUpper()
@@ -120,7 +123,7 @@ namespace ArrayVsDictionaryBenchmark
         {
             var matchingCustomers = new List<Customer>();
 
-            foreach (var customer in _customers)
+            foreach (var customer in _customersEnumerable)
             {
                 if (_verifiedCustomerNames.Contains(customer.FirstName)
                     || _certifiedCustomerNames.Contains(customer.FirstName)
@@ -130,8 +133,24 @@ namespace ArrayVsDictionaryBenchmark
 
             return matchingCustomers;
         }
-    }
 
+        [Benchmark]
+        public List<Customer> GetWithoutLINQNoToUpperForLoop()
+        {
+            var matchingCustomers = new List<Customer>();
+
+            for (int i = 0; i < _customers.Length; i++)
+            {
+                var customer = _customers[i];
+                if (_verifiedCustomerNames.Contains(customer.FirstName)
+                    || _certifiedCustomerNames.Contains(customer.FirstName)
+                    || _aListCustomerNames.Contains(customer.FirstName))
+                    matchingCustomers.Add(customer);
+            }
+
+            return matchingCustomers;
+        }
+    }
 
     public sealed class Customer
     {
