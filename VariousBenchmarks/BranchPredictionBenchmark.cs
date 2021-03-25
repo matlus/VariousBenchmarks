@@ -50,5 +50,11 @@ namespace ArrayVsDictionaryBenchmark
 
             return higherThanMidpoint;
         }
+
+        [Benchmark]
+        public int RandomOrderedArrayLinqWhere()
+        {
+            return randomOrderedNumbers.Count(n => n > _MID_POINT);
+        }
     }
 }

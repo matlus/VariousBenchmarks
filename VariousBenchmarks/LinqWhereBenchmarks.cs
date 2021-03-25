@@ -1,4 +1,5 @@
 ﻿using BenchmarkDotNet.Attributes;
+using BenchmarkDotNet.Engines;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,22 +14,26 @@ namespace ArrayVsDictionaryBenchmark
         private HashSet<string> _aListCustomerNames;
         private Customer[] _customers;
         private IEnumerable<Customer> _customersEnumerable;
-        private readonly StringCaseInsensitiveComparer _stringCaseInsensitiveComparer = new StringCaseInsensitiveComparer();
+        private readonly StringComparer _stringComparerOrdinalIgnoreCase = StringComparer.OrdinalIgnoreCase;        
 
         [GlobalSetup]
         public void GlobalSetup()
         {
             _verifiedCustomerNames = new HashSet<string> { "AAA", "DDD", "EEE" };
-            _certifiedCustomerNames = new HashSet<string> { "FFF", "GGG", "HHH" };
-            _aListCustomerNames = new HashSet<string> { "III", "JJJ", "KKK" };
+            _certifiedCustomerNames = new HashSet<string> { "BBB", "GGG", "HHH", "III", "LLL", "MMM", "NNN" };
+            _aListCustomerNames = new HashSet<string> { "CCC", "JJJ", "KKK" };
 
             _customers = new[]
             {
                 new Customer("aaa", "Laaaa"),
                 new Customer("bbb", "Lbbbb"),
                 new Customer("ccc", "Lcccc"),
+                new Customer("ooo", "Loooo"),
+                new Customer("ppp", "Lpppp"),
+                new Customer("qqq", "Lqqqq"),
             };
 
+            _customersEnumerable = _customers.ToList();
             var customersList = new List<Customer>();
             customersList.AddRange(_customers);
             _customersEnumerable = customersList;
@@ -51,9 +56,9 @@ namespace ArrayVsDictionaryBenchmark
             return
                 _customers
                     .Where(c =>
-                       _verifiedCustomerNames.Contains(c.FirstName, _stringCaseInsensitiveComparer)
-                    || _certifiedCustomerNames.Contains(c.FirstName, _stringCaseInsensitiveComparer)
-                    || _aListCustomerNames.Contains(c.FirstName, _stringCaseInsensitiveComparer)).ToList();
+                       _verifiedCustomerNames.Contains(c.FirstName, _stringComparerOrdinalIgnoreCase)
+                    || _certifiedCustomerNames.Contains(c.FirstName, _stringComparerOrdinalIgnoreCase)
+                    || _aListCustomerNames.Contains(c.FirstName, _stringComparerOrdinalIgnoreCase)).ToList();
         }
 
         [Benchmark]
@@ -82,8 +87,8 @@ namespace ArrayVsDictionaryBenchmark
         {
             return
                 (from customer in _customers
-                 let uppercaseFirstName = customer.FirstName.ToUpper()
-                 where _verifiedCustomerNames.Contains(uppercaseFirstName) || _certifiedCustomerNames.Contains(uppercaseFirstName) || _aListCustomerNames.Contains(uppercaseFirstName)
+                 let firstNameUppered = customer.FirstName.ToUpper()
+                 where _verifiedCustomerNames.Contains(firstNameUppered) || _certifiedCustomerNames.Contains(firstNameUppered) || _aListCustomerNames.Contains(firstNameUppered)
                  select customer).ToList();
         }
 
@@ -102,11 +107,11 @@ namespace ArrayVsDictionaryBenchmark
         }
 
         [Benchmark]
-        public List<Customer> GetWithoutLINQ()
+        public List<Customer> GetWithoutLINQForEach()
         {
             var matchingCustomers = new List<Customer>();
 
-            foreach (var customer in _customers)
+            foreach (var customer in _customersEnumerable)
             {
                 var firstNameUppered = customer.FirstName.ToUpper();
                 if (_verifiedCustomerNames.Contains(firstNameUppered)
@@ -119,7 +124,30 @@ namespace ArrayVsDictionaryBenchmark
         }
 
         [Benchmark]
-        public List<Customer> GetWithoutLINQNoToUpper()
+        public List<Customer> GetWithoutLINQForLoop()
+        {
+            var matchingCustomers = new List<Customer>();
+
+            for (int i = 0; i < _customers.Length; i++)
+            {
+                var customer = _customers[i];
+                var firstNameUppered = customer.FirstName.ToUpper();
+                if (_verifiedCustomerNames.Contains(firstNameUppered)
+                    || _certifiedCustomerNames.Contains(firstNameUppered)
+                    || _aListCustomerNames.Contains(firstNameUppered))
+                    matchingCustomers.Add(customer);
+            }
+
+            return matchingCustomers;
+        }
+
+        /// <summary>
+        /// This method exists only to get  a sense of the 
+        /// overhead/cost of doing the ToUpper()
+        /// </summary>
+        /// <returns></returns>
+        [Benchmark]
+        public List<Customer> GetWithoutLINQNoToUpperForEach()
         {
             var matchingCustomers = new List<Customer>();
 
@@ -134,7 +162,12 @@ namespace ArrayVsDictionaryBenchmark
             return matchingCustomers;
         }
 
-        [Benchmark]
+        /// <summary>
+        /// This method exists only to get  a sense of the 
+        /// overhead/cost of doing the ToUpper()
+        /// </summary>
+        /// <returns></returns>
+        [Benchmark]        
         public List<Customer> GetWithoutLINQNoToUpperForLoop()
         {
             var matchingCustomers = new List<Customer>();
@@ -161,22 +194,6 @@ namespace ArrayVsDictionaryBenchmark
         {
             FirstName = firstName;
             LastName = lastName;
-        }
-    }
-
-    public sealed class StringCaseInsensitiveComparer : IEqualityComparer<string>
-    {
-        private readonly StringComparer _stringComparer = StringComparer.OrdinalIgnoreCase;
-
-        public bool Equals(string x, string y)
-        {
-            return _stringComparer.Compare(x, y) == 0;
-        }
-
-        public int GetHashCode(string obj)
-        {
-            var hashCode = 1938039292;
-            return hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(obj);
         }
     }
 }
