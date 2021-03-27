@@ -14,7 +14,7 @@ namespace ArrayVsDictionaryBenchmark
         private Dictionary<int, int> intDictionary;
         private int[] numbersToLookup;
 
-        [Params(/*55, 60, 65, 70,*/ 75, 80)]
+        [Params(30, 55, /*60, 65, 70, 75,*/ 80)]
         public int NumberOfElements { get; set; }
 
         [GlobalSetup]
@@ -55,18 +55,18 @@ namespace ArrayVsDictionaryBenchmark
             return foundCount;
         }
 
-        ////[Benchmark]
-        ////public int SortedArrayLookup()
-        ////{
-        ////    var foundCount = 0;
-        ////    for (int i = 0; i < numbersToLookup.Length - 1; i++)
-        ////    {
-        ////        Array.BinarySearch<int>(intArraySorted, numbersToLookup[i]);
-        ////        foundCount++;
-        ////    }
+        [Benchmark]
+        public int SortedArrayLookup()
+        {
+            var foundCount = 0;
+            for (int i = 0; i < numbersToLookup.Length - 1; i++)
+            {
+                _ = Array.BinarySearch<int>(intArraySorted, numbersToLookup[i]);
+                foundCount++;
+            }
 
-        ////    return foundCount;
-        ////}
+            return foundCount;
+        }
 
         [Benchmark]
         public int DictionaryLookup()

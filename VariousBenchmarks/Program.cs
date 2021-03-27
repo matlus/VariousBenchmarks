@@ -18,9 +18,9 @@ namespace ArrayVsDictionaryBenchmark
             ////BenchmarkRunner.Run<StringEqualityBenchmark>();
             ////BenchmarkRunner.Run<StringConcatVsMutate>();
             ////BenchmarkRunner.Run<StringConcatenationBenchmark>();
-            BenchmarkRunner.Run<BranchPredictionBenchmark>();
+            ////BenchmarkRunner.Run<BranchPredictionBenchmark>();
             ////BenchmarkRunner.Run<AsyncVsContinueWith>();
-            ////BenchmarkRunner.Run<LinqWhereBenchMarks>();
+            BenchmarkRunner.Run<LinqWhereBenchMarks>();
             
             Console.WriteLine("Done.....Press any key to Quit");
             Console.ReadLine();
